@@ -1,6 +1,8 @@
 # hello-huma
 
-A minimal HTTP API built with [Huma v2](https://huma.rocks), [Chi](https://github.com/go-chi/chi) and [Zap](https://go.uber.org/zap) — a small, opinionated starting point for a Go microservice.
+[![Audit (CI)](https://github.com/fury175/hello-huma/actions/workflows/audit.yml/badge.svg?branch=main)](https://github.com/fury175/hello-huma/actions/workflows/audit.yml)
+
+A minimal HTTP API starter template built with [Huma v2](https://huma.rocks), [Chi](https://github.com/go-chi/chi) and [Zap](https://go.uber.org/zap) — a small, opinionated starting point for a Go microservice.
 
 ## Stack
 
@@ -14,7 +16,7 @@ A minimal HTTP API built with [Huma v2](https://huma.rocks), [Chi](https://githu
 
 ## Requirements
 
-- Go 1.27+
+- Go 1.26+ (minimum supported; see the `go` directive in `go.mod`)
 - Docker (optional, for containerized runs)
 - air (optional, for live reload): `go install github.com/air-verse/air@latest`
 
@@ -78,11 +80,17 @@ docker run --rm -p 3001:3001 hello-huma
 
 The runtime stage is built on `scratch` with a static (`CGO_ENABLED=0`) binary and runs unprivileged — the image is ~12 MB.
 
+Note: `scratch` ships without a CA store, so the Dockerfile copies the CA bundle from the builder stage (`/etc/ssl/certs/ca-certificates.crt`). Without it, any outbound HTTPS call from the container fails with a certificate-verification error.
+
 Override config at runtime:
 
 ```bash
 docker run --rm -p 3001:3001 -e ADDR=:8080 -e ENV=production hello-huma
 ```
+
+## Releases
+
+Versions are tagged and released automatically by [release-please](https://github.com/googleapis/release-please) — see [CHANGELOG.md](CHANGELOG.md).
 
 ## Project layout
 
@@ -97,9 +105,15 @@ docker run --rm -p 3001:3001 -e ADDR=:8080 -e ENV=production hello-huma
 ├── internal/
 │   ├── apperror/      # huma error helpers + middleware
 │   └── logger/        # zap logger singleton
+├── .github/
+│   └── workflows/     # CI (audit), release-please, auto version bump
 ├── .air.toml          # air (live reload) config
 ├── .env.example
 ├── .gitignore
 ├── .dockerignore
-└── Dockerfile
+├── CHANGELOG.md       # maintained by release-please
+├── Dockerfile
+├── LICENSE            # MIT
+├── go.mod
+└── go.sum
 ```
