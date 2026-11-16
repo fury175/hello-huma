@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- build stage ----
-FROM golang:1.27 AS build
+FROM golang:1.26 AS build
 
 WORKDIR /src
 
@@ -16,6 +16,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -ldflags="-s -w" -o /out/hello-h
 FROM scratch
 
 COPY --from=build /out/hello-huma /hello-huma
+
+# scratch has no CA store; copy it so the app can verify TLS on outbound calls.
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
 EXPOSE 3001
 
