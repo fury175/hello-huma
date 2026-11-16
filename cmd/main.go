@@ -7,7 +7,7 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-const version = "0.0.1"
+const version = "1.0.0"
 
 func main() {
 	cfg, err := env.ParseAs[config]()
