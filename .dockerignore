@@ -1,0 +1,21 @@
+# version control
+.git/
+.gitignore
+
+# local environment files (config comes via -e / docker secrets)
+.env
+.env.example
+
+# build artifacts
+bin/
+*.exe
+
+# tests & docs (not needed in the image)
+*_test.go
+Dockerfile
+.dockerignore
+README.md
+
+# misc
+.DS_Store
+*.log

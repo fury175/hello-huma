@@ -1,0 +1,16 @@
+# local environment file
+.env
+
+# build artifacts
+bin/
+*.exe
+
+# test results
+*.out
+coverage.txt
+
+# editor / OS noise
+.DS_Store
+*.swp
+.idea/
+.vscode/
